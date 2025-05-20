@@ -1,4 +1,7 @@
 # Coffee Ordering System for Odoo ☕️
+![Odoo 18](https://img.shields.io/badge/Odoo-18.0-blue)
+![Status](https://img.shields.io/badge/status-in%20development-yellow)
+
 
 An Odoo custom module that enables customers to order coffee by scanning a QR code at their table. Ideal for cafes and coffee shops looking to streamline ordering and reduce manual input.
 

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Action: Coffee Table -->
+    <record id="action_coffee_table" model="ir.actions.act_window">
+        <field name="name">Coffee Tables</field>
+        <field name="res_model">coffee.table</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- View: Coffee Table list -->
+    <record id="view_coffee_table_list" model="ir.ui.view">
+        <field name="name">coffee.table.list</field>
+        <field name="model">coffee.table</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="token"/>
+                <field name="qr_url"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- View: Coffee Table Form -->
+    <record id="view_coffee_table_form" model="ir.ui.view">
+        <field name="name">coffee.table.form</field>
+        <field name="model">coffee.table</field>
+        <field name="arch" type="xml">
+            <form string="Coffee Table">
+                <header>
+                </header>
+                <sheet>
+                    <div name="button_box" class="oe_button_box">
+                        <button name="action_generate_qr_image"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-refresh"
+                                invisible="not qr_url">
+                            <div class="o_stat_info">
+                                <span>Regenerate QR</span>
+                            </div>
+                        </button>
+                    </div>
+                    <field name="active" invisible="1"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" invisible ="active == True"/>
+                    <div style="width:100%;" class="row align-items-center">
+                        <div class="mb16 col-8 col-lg-10 px-4">
+                            <div class="row">
+                                <h2 class="col-12 col-lg-10">
+                                    <field name="name" placeholder="Table Name" required="1"/>
+                                </h2>
+                            </div>
+                        </div>
+                        <div class="col-4 col-lg-2">
+                            <field name="qr_image" widget="image" class="oe_left oe_avatar" options="{'preview_image': 'qr_image'}"/>
+                        </div>
+                    </div>
+                    <group>
+                        <field name="token" readonly="1"/>
+                        <field name="qr_url" readonly="1"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action: Coffee Orders -->
+    <record id="action_coffee_order" model="ir.actions.act_window">
+        <field name="name">Coffee Orders</field>
+        <field name="res_model">coffee.order</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- View: Coffee Order list -->
+    <record id="view_coffee_order_list" model="ir.ui.view">
+        <field name="name">coffee.order.list</field>
+        <field name="model">coffee.order</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="table_id"/>
+                <field name="state"/>
+                <field name="session_expiry"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- View: Coffee Order Form -->
+    <record id="view_coffee_order_form" model="ir.ui.view">
+        <field name="name">coffee.order.form</field>
+        <field name="model">coffee.order</field>
+        <field name="arch" type="xml">
+            <form string="Coffee Order">
+                <header>
+                    <field name="state"  widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="table_id"/>
+                        </group>
+                        <group>
+                            <field name="session_expiry" readonly="1"/>
+                            <field name="create_uid"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Order Lines">
+                            <field name="order_line_ids">
+                                <list editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="qty"/>
+                                    <field name="price_unit" readonly="1"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+</odoo>

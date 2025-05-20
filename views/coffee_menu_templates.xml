@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="coffee_menu_page" name="Coffee Menu Page">
+        <t t-call="website.layout">
+            <div class="container mt-4 mb-4">
+                <h2 class="text-center">Welcome! ☕ Scan &amp; Order</h2>
+                <t t-if="products">
+                    <form action="/coffee/submit" method="post">
+                        <input type="hidden" name="table_token" t-att-value="table_token"/>
+                        <div class="row">
+                            <t t-foreach="products" t-as="product">
+                                <div class="col-md-4 mb-4">
+                                    <div class="card">
+                                        <img t-att-src="'/web/image/product.template/%s/image_1920' % product.id" class="card-img-top"/>
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <t t-esc="product.name"/>
+                                            </h5>
+                                            <p class="card-text">
+                                                <t t-esc="'%.0f' % product.list_price"/> IDR
+                                            </p>
+                                            <div class="form-group">
+                                                <label>Qty</label>
+                                                <input type="number" class="form-control" name="product_%s" t-att-name="'product_%d' % product.id" min="0" value="0"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary mt-3">Submit Order</button>
+                        </div>
+                    </form>
+                </t>
+                <t t-if="not products">
+                    <div class="alert alert-warning text-center">No products available right now.</div>
+                </t>
+            </div>
+        </t>
+    </template>
+</odoo>

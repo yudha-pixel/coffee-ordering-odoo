@@ -20,7 +20,7 @@ An Odoo custom module that enables customers to order coffee by scanning a QR co
 ---
 
 ## 📦 Module Structure
-
+```text
 erpquick_coffee_ordering/
 ├── controllers/
 │ └── main.py (website QR route)
@@ -34,8 +34,13 @@ erpquick_coffee_ordering/
 │ └── security.xml
 ├── manifest.py
 ├── init.py
-
+```
 ---
+
+## 📈 System Flow
+
+![Coffee Ordering Flow](docs/coffee_ordering_flow.png)
+
 
 ## 🚀 Installation
 
@@ -67,9 +72,3 @@ erpquick_coffee_ordering/
 
 **ERPQuick by Yudha Pixel**  
 🔗 [github.com/yudha-pixel](https://github.com/yudha-pixel)
-
----
-
-## 📄 License
-
-MIT License. See `LICENSE` file for full details.

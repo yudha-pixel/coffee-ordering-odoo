@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <!-- Menu Root -->
-    <menuitem id="menu_coffee_root" name="Coffee Ordering" sequence="1" web_icon="erpquick_coffee_ordering,static/description/icon.png"/>
+<!--    <menuitem id="menu_coffee_root" name="Coffee Ordering" sequence="1" web_icon="erpquick_coffee_ordering,static/description/icon.png"/>-->
 
-    <!-- Menu Tables -->
-    <menuitem id="menu_coffee_table"
-              name="Tables"
-              parent="menu_coffee_root"
-              action="action_coffee_table"
-              sequence="10"/>
+<!--    &lt;!&ndash; Menu Tables &ndash;&gt;-->
+<!--    <menuitem id="menu_coffee_table"-->
+<!--              name="Tables"-->
+<!--              parent="menu_coffee_root"-->
+<!--              action="action_coffee_table"-->
+<!--              sequence="10"/>-->
 
-    <!-- Menu Orders -->
-    <menuitem id="menu_coffee_order"
-              name="Orders"
-              parent="menu_coffee_root"
-              action="action_coffee_order"
-              sequence="20"/>
+<!--    &lt;!&ndash; Menu Orders &ndash;&gt;-->
+<!--    <menuitem id="menu_coffee_order"-->
+<!--              name="Orders"-->
+<!--              parent="menu_coffee_root"-->
+<!--              action="action_coffee_order"-->
+<!--              sequence="20"/>-->
 </odoo>

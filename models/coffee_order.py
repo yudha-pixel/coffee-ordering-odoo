@@ -6,13 +6,10 @@ import base64
 from io import BytesIO
 
 class CoffeeTable(models.Model):
-    _name = 'coffee.table'
-    _inherit = ['mail.thread', 'mail.activity.mixin']
-    _description = 'Coffee Table'
+    _name = 'restaurant.table'
+    _inherit = ['restaurant.table', 'mail.thread', 'mail.activity.mixin']
 
-    name = fields.Char('Table Name', required=True, tracking=True)
-    active = fields.Boolean(default=True, tracking=True)
-    token = fields.Char('Token', default=lambda self: uuid.uuid4().hex, readonly=True)
+    token = fields.Char('Token', default=lambda self: uuid.uuid4().hex, readonly=True, tracking=True)
     qr_url = fields.Char('QR URL', compute='_compute_qr_url')
     qr_image = fields.Binary('QR Code Image', compute='_compute_qr_image', store=True)
 
@@ -44,33 +41,16 @@ class CoffeeTable(models.Model):
 
 
 class CoffeeOrder(models.Model):
-    _name = 'coffee.order'
-    _description = 'Coffee Order'
-    _inherit = ['mail.thread']
+    _inherit = 'sale.order'
 
-    name = fields.Char(default='New', readonly=True)
-    table_id = fields.Many2one('coffee.table', string='Table')
+    table_id = fields.Many2one('restaurant.table', string='Table')
     guest_token = fields.Char('Guest Token')
-    order_line_ids = fields.One2many('coffee.order.line', 'order_id')
     session_expiry = fields.Datetime('Session Expiry')
-    state = fields.Selection([
-        ('draft', 'Draft'),
-        ('confirmed', 'Confirmed'),
-        ('preparing', 'Preparing'),
-        ('done', 'Done')
-    ], default='draft', tracking=True)
+    is_coffee_order = fields.Boolean(string='Coffee Order', default=False)
 
-    @api.model
-    def create(self, vals):
-        vals['name'] = self.env['ir.sequence'].next_by_code('coffee.order') or 'New'
-        vals['session_expiry'] = datetime.now() + timedelta(hours=24)
-        return super().create(vals)
-
-class CoffeeOrderLine(models.Model):
-    _name = 'coffee.order.line'
-    _description = 'Coffee Order Line'
-
-    order_id = fields.Many2one('coffee.order')
-    product_id = fields.Many2one('product.product')
-    qty = fields.Integer('Qty', default=1)
-    price_unit = fields.Float('Price', related='product_id.list_price', store=True)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            # vals['name'] = self.env['ir.sequence'].next_by_code('coffee.order') or 'New'
+            vals['session_expiry'] = datetime.now() + timedelta(hours=24)
+        return super().create(vals_list)

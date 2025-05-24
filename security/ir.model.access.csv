@@ -1,5 +1,1 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_coffee_table_user,access.coffee.table.user,model_coffee_table,base.group_user,1,1,1,1
-access_coffee_order_user,access.coffee.order.user,model_coffee_order,base.group_user,1,1,1,1
-access_coffee_order_line_user,access.coffee.order.line.user,model_coffee_order_line,base.group_user,1,1,1,1
-access_coffee_order_barista,access.coffee.order.barista,model_coffee_order,erpquick_coffee_ordering.group_barista,1,1,1,0

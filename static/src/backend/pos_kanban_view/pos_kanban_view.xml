@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <t t-name="erpquick_coffee_ordering.ScenarioCard" t-inherit="point_of_sale.ScenarioCard" t-inherit-mode="extension">
+        <xpath expr="//img" position="attributes">
+            <attribute name="t-attf-src">/{{item.module or 'point_of_sale'}}/static/img/{{item.iconFile}}</attribute>
+        </xpath>
+    </t>
+</odoo>

@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <!-- Menu Root -->
-<!--    <menuitem id="menu_coffee_root" name="Coffee Ordering" sequence="1" web_icon="erpquick_coffee_ordering,static/description/icon.png"/>-->
+    <menuitem id="menu_coffee_root" name="Coffee Ordering" sequence="1" web_icon="erpquick_coffee_ordering,static/description/icon.png"/>
+    <menuitem id="menu_coffee_pos_dashboard" action="point_of_sale.action_pos_config_kanban" parent="menu_coffee_root" name="Dashboard" sequence="1"/>
 
-<!--    &lt;!&ndash; Menu Tables &ndash;&gt;-->
-<!--    <menuitem id="menu_coffee_table"-->
-<!--              name="Tables"-->
-<!--              parent="menu_coffee_root"-->
-<!--              action="action_coffee_table"-->
-<!--              sequence="10"/>-->
+    <!-- Product -->
+    <menuitem id="menu_coffee_product" name="Products" parent="menu_coffee_root"/>
+    <menuitem id="menu_coffee_product_product" name="Product" parent="menu_coffee_product" action="action_pos_product_template"/>
+    <menuitem id="menu_coffee_product_product_variant" name="Product Variants" parent="menu_coffee_product" action="point_of_sale.product_product_action"/>
 
-<!--    &lt;!&ndash; Menu Orders &ndash;&gt;-->
-<!--    <menuitem id="menu_coffee_order"-->
-<!--              name="Orders"-->
-<!--              parent="menu_coffee_root"-->
-<!--              action="action_coffee_order"-->
-<!--              sequence="20"/>-->
+    <!--Configuration-->
+    <menuitem id="menu_coffee_configuration" name="Configuration" parent="menu_coffee_root"/>
+    <menuitem id="menu_coffee_floor" name="Floor" parent="menu_coffee_configuration" action="pos_restaurant.action_restaurant_floor_form"/>
+    <menuitem id="menu_coffee_table" name="Table" parent="menu_coffee_configuration" action="action_restaurant_table_form"/>
 </odoo>

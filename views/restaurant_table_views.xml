@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_restaurant_table_tree" model="ir.ui.view">
+        <field name="name">restaurant.table.tree</field>
+        <field name="model">restaurant.table</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="floor_id"/>
+                <field name="name"/>
+                <field name="seats"/>
+                <field name="shape"/>
+                <field name="qr_url" widget="url" string="QR Link"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_restaurant_table_kanban" model="ir.ui.view">
+        <field name="name">restaurant.table.kanban</field>
+        <field name="model">restaurant.table</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_dashboard" default_group_by="floor_id">
+                <field name="name"/>
+                <field name="seats"/>
+                <field name="floor_id"/>
+                <templates>
+                    <t t-name="card">
+                        <main class="pe-2">
+                            <div class="d-flex mb-0 h5">
+                                <strong><field name="name"/></strong>
+                            </div>
+                            <div>
+                                <span>Seats: <field name="seats"/></span><br/>
+                                <span>Floor: <field name="floor_id"/></span>
+                            </div>
+                        </main>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_restaurant_table_form" model="ir.ui.view">
+        <field name="name">restaurant.table.form</field>
+        <field name="model">restaurant.table</field>
+        <field name="arch" type="xml">
+            <form string="Tables">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="floor_id"/>
+                        <field name="seats"/>
+                        <field name="shape"/>
+                        <field name="color"/>
+                    </group>
+                    <group>
+                        <field name="qr_url" readonly="1"/>
+<!--                        <img t-att-src="'/report/barcode/QR/%s?width=180&amp;height=180&amp;barLevelH' % (qr_url or '')"-->
+<!--                             class="oe_avatar" width="180" height="180"/>-->
+                        <field name="qr_image" widget="image" class="oe_left oe_avatar" options="{'preview_image': 'qr_image'}"/>
+                        <button name="print_qr" type="object" string="Print QR" class="btn-primary"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_restaurant_table_search" model="ir.ui.view">
+        <field name="name">restaurant.table.search</field>
+        <field name="model">restaurant.table</field>
+        <field name="arch" type="xml">
+            <search string="Search Tables">
+                <!-- Default search fields -->
+                <field name="name"/>
+                <field name="table_number"/>
+                <field name="floor_id"/>
+                <field name="shape"/>
+
+                <!-- Filters -->
+                <group name="filter" string="Filter">
+                    <filter name="has_seats" string="Has Seats" domain="[('seats', '>', 0)]"/>
+                    <filter name="no_seats" string="No Seats" domain="[('seats', '=', 0)]"/>
+                    <filter name="inactive" string="Inactive" domain="[('active', '=', False)]"/>
+                    <filter name="circle" string="Shape: Circle" domain="[('shape', '=', 'circle')]"/>
+                    <filter name="squeare" string="Shape: Square" domain="[('shape', '=', 'square')]"/>
+                </group>
+
+                <!-- Group By -->
+                <group name="group_by" string="Group By">
+                    <filter name="floor_id" string="Floor" context="{'group_by': 'floor_id'}"/>
+                    <filter name="shape" string="Shape" context="{'group_by': 'shape'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+    <record id="action_restaurant_table_form" model="ir.actions.act_window">
+        <field name="name">Tables</field>
+        <field name="res_model">restaurant.table</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="search_view_id" ref="view_restaurant_table_search"/>
+        <field name="view_ids"
+               eval="[(5, 0, 0),
+               (0, 0, {'view_mode': 'list', 'view_id': ref('view_restaurant_table_tree')}),
+               (0, 0, {'view_mode': 'kanban', 'view_id': ref('view_restaurant_table_kanban')}),
+               (0, 0, {'view_mode': 'form', 'view_id': ref('view_restaurant_table_form')})]"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_similing_face">
+                Add a new restaurant table after add floor
+            </p>
+        </field>
+    </record>
+</odoo>

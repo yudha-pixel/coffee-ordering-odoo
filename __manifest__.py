@@ -4,7 +4,7 @@
 {
     'name': 'ERPQuick Coffee Ordering System',
     'version': '1.0',
-    'depends': ['base', 'admin_module', 'point_of_sale', 'pos_restaurant', 'website_sale', 'payment'],
+    'depends': ['base', 'point_of_sale', 'pos_restaurant'],
     'category': 'Custom',
     'author': 'ERPQuick',
     'license': 'LGPL-3',
@@ -12,11 +12,12 @@
     'data': [
         # 'security/security.xml',
         # 'security/ir.model.access.csv',
-        # 'views/coffee_order_views.xml',
+        'views/coffee_order_views.xml',
         # 'views/pos_config_view.xml',
         'views/restaurant_table_views.xml',
         'views/product_template_views.xml',
         'views/menu_views.xml',
+        'views/react_app_template.xml',
 
         # 'views/coffee_menu_templates.xml',
         #

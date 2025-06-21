@@ -31,3 +31,11 @@ class PosConfig(models.Model):
             'self_ordering_mode': 'mobile'
         }])
 
+    def erpq_preview_self_order_app(self):
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_url",
+            "url": "/self_order/app",
+            "target": "new",
+        }
+

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="react_app_template" name="React App">
+        <![CDATA[
+            <!DOCTYPE html>
+            <html lang="en">
+                <head>
+                    <meta charset="UTF-8" />
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                    <title>Self Order</title>
+                    <link rel="stylesheet" href="/erpquick_coffee_ordering/static/src/react_app/assets/index.css"/>
+                </head>
+                <body>
+                    <div id="root"></div>
+                    <script type="module" src="/erpquick_coffee_ordering/static/src/react_app/assets/index.js"></script>
+                </body>
+            </html>
+        ]]>
+    </template>
+</odoo>

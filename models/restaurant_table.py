@@ -4,12 +4,14 @@ from io import BytesIO
 
 import base64
 import qrcode
+import uuid
 
 class RestaurantTable(models.Model):
     _name = 'restaurant.table'
     _inherit = ['restaurant.table', 'mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(string='Coffee Name', compute='_compute_name', store=True)
+    token = fields.Char('Token', default=lambda self: uuid.uuid4().hex, readonly=True, tracking=True)
     qr_url = fields.Char('QR URL', compute='_compute_qr_url')
     qr_image = fields.Binary('QR Code Image', compute='_compute_qr_image', store=True)
 
@@ -28,11 +30,11 @@ class RestaurantTable(models.Model):
 
             table.name = name
 
-    @api.depends('identifier')
+    @api.depends('token')
     def _compute_qr_url(self):
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         for table in self:
-            table.qr_url = f"{base_url}/pos-self/{table.floor_id.id}/{table.name}/{table.identifier}"
+            table.qr_url = f"{base_url}/pos-self/{table.floor_id.id}/{table.name}/{table.token}"
 
     @api.depends('qr_url')
     def _compute_qr_image(self):

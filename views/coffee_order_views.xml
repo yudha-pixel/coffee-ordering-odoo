@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    <record id="erpq_pos_self_order_menu_item" model="ir.ui.view">
+        <field name="name">erpq.pos.config.kanban.view.inherit.self_order</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_config_kanban" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//div[hasclass('dropdown-pos-config')]/div/div[hasclass('o_kanban_manage_view')]"
+                position="inside">
+                <div role="menuitem">
+                    <a name="erpq_preview_self_order_app"
+                        type="object"
+                        style="white-space: nowrap;">
+                        Self-Order
+                    </a>
+                </div>
+            </xpath>
+        </field>
+    </record>
 
     <!-- Action: Coffee Table -->
 <!--    <record id="action_coffee_table" model="ir.actions.act_window">-->

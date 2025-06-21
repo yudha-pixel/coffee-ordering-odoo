@@ -5,6 +5,9 @@ from datetime import timedelta
 import uuid
 
 class CoffeeOrderController(http.Controller):
+    @http.route('/self_order/app', type='http', auth='public')
+    def serve_react_app(self, **kw):
+        return request.render('erpquick_coffee_ordering.react_app_template')
 
     # @http.route('/order', type='http', auth='public', website=True)
     @http.route('/order', auth="public", website=True)

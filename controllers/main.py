@@ -7,7 +7,13 @@ import uuid
 class CoffeeOrderController(http.Controller):
     @http.route('/self_order/app', type='http', auth='public')
     def serve_react_app(self, **kw):
-        return request.render('erpquick_coffee_ordering.react_app_template')
+        template = 'erpquick_coffee_ordering.self_order_page_view'
+        is_dev_mode = request.env['ir.config_parameter'].sudo().get_param('react_development_mode')
+
+        if is_dev_mode == 'True':
+            template = 'erpquick_coffee_ordering.self_order_page_view_dev'
+
+        return request.render(template)
 
     # @http.route('/order', type='http', auth='public', website=True)
     @http.route('/order', auth="public", website=True)

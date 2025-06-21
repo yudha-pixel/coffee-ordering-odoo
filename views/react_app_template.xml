@@ -1,16 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="react_app_template" name="React App">
+    <record id="react_development_mode" model="ir.config_parameter">
+        <field name="key">react_development_mode</field>
+        <field name="value">False</field>
+    </record>
+
+    <template id="self_order_page_view_dev" name="Self Order Interface (Development)">
         <![CDATA[
             <!DOCTYPE html>
             <html lang="en">
                 <head>
-                    <meta charset="UTF-8" />
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                    <meta charset="utf-8"/>
+                    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                    <title>Self Order (DEV)</title>
+                </head>
+                <body>
+                    <noscript>You need to enable JavaScript to run this app.</noscript>
+                    <div id="root"></div>
+
+                    <script type="module" src="http://localhost:5173/@vite/client"></script>
+                    <script type="module">
+                      import RefreshRuntime from 'http://localhost:5173/@react-refresh'
+                      RefreshRuntime.injectIntoGlobalHook(window)
+                      window.$RefreshReg$ = () => {}
+                      window.$RefreshSig$ = () => (type) => type
+                      window.__vite_plugin_react_preamble_installed__ = true
+                    </script>
+                    <script type="module" src="http://localhost:5173/src/main.tsx"></script>
+                </body>
+            </html>
+        ]]>
+    </template>
+
+    <template id="self_order_page_view" name="Self Order Interface">
+        <![CDATA[
+            <!DOCTYPE html>
+            <html lang="en">
+                <head>
+                    <meta charset="utf-8"/>
+                    <meta name="viewport" content="width=device-width, initial-scale=1"/>
                     <title>Self Order</title>
                     <link rel="stylesheet" href="/erpquick_coffee_ordering/static/src/react_app/assets/index.css"/>
                 </head>
                 <body>
+                    <noscript>You need to enable JavaScript to run this app.</noscript>
                     <div id="root"></div>
                     <script type="module" src="/erpquick_coffee_ordering/static/src/react_app/assets/index.js"></script>
                 </body>

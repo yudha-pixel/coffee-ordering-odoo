@@ -15,6 +15,38 @@ class CoffeeOrderController(http.Controller):
 
         return request.render(template)
 
+    @http.route('/self_order/app/products', type='json', auth='public')
+    def get_products_for_app(self, **kw):
+        Product = request.env['product.template'].sudo().with_context(bin_size=True)
+        categories = request.env['pos.category'].sudo().search([], order="sequence, name")
+
+        grouped_products_data = []
+        for category in categories:
+            products = Product.search([
+                ('sale_ok', '=', True),
+                ('available_in_pos', '=', True),
+                ('pos_categ_ids', '=', category.id),
+            ])
+            products = products.filtered(lambda p: p.product_variant_id.is_published)
+
+            if products:
+                products_data = []
+                for product in products:
+                    products_data.append({
+                        'id': product.id,
+                        'name': product.name,
+                        'price': product.list_price,
+                        'image_url': f'/web/image/product.template/{product.id}/image_1920',
+                        'description': product.description_sale,
+                        'product_variant_id': product.product_variant_id.id,
+                    })
+                grouped_products_data.append({
+                    'category_id': category.id,
+                    'category_name': category.name,
+                    'products': products_data,
+                })
+        return grouped_products_data
+
     # @http.route('/order', type='http', auth='public', website=True)
     @http.route('/order', auth="public", website=True)
     def order_menu(self, **kwargs):

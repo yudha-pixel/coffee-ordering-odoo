@@ -17,7 +17,7 @@ interface ErrorStateProps {
   isOnline: boolean;
 }
 
-export default function ErrorState({ state, onRetry, retryCount, isOnline }: ErrorStateProps) {
+export default function ErrorState({ state, onRetry }: ErrorStateProps) {
   const getErrorContent = () => {
     switch (state) {
       case "timeout":
@@ -27,14 +27,14 @@ export default function ErrorState({ state, onRetry, retryCount, isOnline }: Err
           message:
             "The app is taking longer than expected to load. This might be due to a slow connection.",
         };
-      case "offline":
-        return {
-          icon: <WifiOff className="w-12 h-12 text-red-500" />,
-          title: "You're Offline",
-          message: isOnline
-            ? "Connection restored! You can retry now."
-            : "Please check your internet connection and try again.",
-        };
+      // case "offline":
+      //   return {
+      //     icon: <WifiOff className="w-12 h-12 text-red-500" />,
+      //     title: "You're Offline",
+      //     message: isOnline
+      //       ? "Connection restored! You can retry now."
+      //       : "Please check your internet connection and try again.",
+      //   };
       case "error":
       default:
         return {

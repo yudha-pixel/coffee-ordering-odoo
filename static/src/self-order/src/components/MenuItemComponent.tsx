@@ -6,24 +6,22 @@ import { Heart, Minus, Plus } from "lucide-react";
 
 // Type Imports
 import {
-  ProductProduct,
-} from "../types";
+    Product,
+} from "@/types";
 
 interface MenuItemComponentProps {
-  item: ProductProduct; 
+  item: Product;
   quantity: number;
-  isFavorited: boolean;
-  onShowDetail: (item: ProductProduct) => void;
-  onQuickAdd: (item: ProductProduct) => void;
-  onQuantityChange: (item: ProductProduct, quantity: number) => void;
-  onToggleFavorite: (item: ProductProduct) => void;
+  onShowDetail: (item: Product) => void;
+  onQuickAdd: (item: Product) => void;
+  onQuantityChange: (item: Product, quantity: number) => void;
+  onToggleFavorite: (item: Product) => void;
 }
 
 // Updated MenuItemComponent with lazy loading
 export default function MenuItemComponent({ 
   item, 
   quantity,
-  isFavorited,
   onShowDetail, 
   onQuickAdd,
   onQuantityChange,
@@ -39,7 +37,7 @@ export default function MenuItemComponent({
           {/* Image */}
           <div className="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-xl overflow-hidden flex-shrink-0 relative">
             <LazyImage
-              src={item.image}
+              src={item.image_url}
               alt={item.name}
               className="w-full h-full object-cover"
             />
@@ -49,7 +47,7 @@ export default function MenuItemComponent({
                   NEW
                 </span>
               )}
-              {item.isRecommended && (
+              {item.isRecommend && (
                 <span className="inline-block bg-green-500 text-white text-xs px-1.5 py-0.5 rounded-full font-medium">
                   ⭐
                 </span>
@@ -75,7 +73,7 @@ export default function MenuItemComponent({
               >
                 <Heart 
                   className={`w-5 h-5 transition-colors ${
-                    isFavorited 
+                    item.isRecommend 
                       ? 'text-red-500 fill-current' 
                       : 'text-gray-400 dark:text-gray-500 hover:text-red-500'
                   }`}
@@ -86,7 +84,7 @@ export default function MenuItemComponent({
             <div className="flex justify-between items-center mt-3">
               <div className="space-y-1">
                 <div className="font-bold text-lg text-gray-900 dark:text-gray-100">
-                  Rp {item.basePrice.toLocaleString()}
+                  Rp {item.price.toLocaleString()}
                 </div>
                 {item.orderCount && item.orderCount > 0 && (
                   <div className="text-xs text-gray-500 dark:text-gray-400">

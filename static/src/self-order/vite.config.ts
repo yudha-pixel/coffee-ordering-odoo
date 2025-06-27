@@ -4,22 +4,24 @@ import path from "path"
 import tailwindcss from "@tailwindcss/vite"
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
+import svgr from 'vite-plugin-svgr'
+
 
 export default defineConfig({
   // 1. Set the base path for production assets
-  base: '',
+  base: '/',
 
-  plugins: [react(), tailwindcss()],
+  plugins: [react(), tailwindcss(), svgr()],
 
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      '@': path.resolve(__dirname, './src'),
     },
   },
 
   build: {
     // 2. Specify the output directory to be your module's assets folder
-    outDir: path.resolve(__dirname, 'assets'),
+    outDir: path.resolve(__dirname, 'dist/assets'),
     
     rollupOptions: {
       // 3. Make output file names predictable and flat

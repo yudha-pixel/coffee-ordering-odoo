@@ -1,32 +1,31 @@
-// src/types/index.ts
-export interface ProductProduct {
-  id: string;
-  name: string;
-  description: string;
-  basePrice: number; // Default price
-  variants?: {
-    sizes?: {
-      Small: number; // Extra price (can be negative for discount)
-      Regular: number; // Usually 0 for base price
-      Large: number; // Extra price
+export interface Product {
+    id: number;
+    name: string;
+    price: number;
+    image_url: string;
+    description: string | '';
+    product_variant_id: number;
+    isNew: boolean;
+    isRecommend: boolean;
+    orderCount: number;
+    category: string | '';
+    comboIds?: number[];
+    variants?: {
+        [attributeName: string]: {
+            [valueName: string]: number;
+        };
     };
-    milk?: {
-      Regular: number;
-      'Oat Milk': number;
-      'Almond Milk': number;
-      'Soy Milk': number;
-    };
-  };
-  image: string;
-  category: string;
-  isNew?: boolean;
-  isRecommended?: boolean;
-  orderCount?: number;
-  comboWith?: string[]; // IDs of recommended combo items
 }
 
+export interface ProductCategory {
+    id: string;
+    name: string;
+    products: Product[];
+}
+
+
 export interface CartItem {
-  id: string;
+  id: number;
   name: string;
   description: string;
   price: number;
@@ -42,8 +41,8 @@ export interface CartItem {
 }
 
 export interface FavoriteItem {
-  id: string;
-  menuItemId: string;
+  id: number;
+  menuItemId: number;
   name: string;
   customizations: {
     size: string;
@@ -56,7 +55,7 @@ export interface FavoriteItem {
 }
 
 export interface OrderItem {
-  id: string;
+  id: number;
   items: CartItem[];
   total: number;
   orderDate: Date;
@@ -64,14 +63,14 @@ export interface OrderItem {
 }
 
 export interface OrderHistoryItem {
-  id: string;
+  id: number;
   items: CartItem[];
   total: number;
   discount?: number;
   orderDate: Date;
   status: 'preparing' | 'ready' | 'served' | 'done';
   paymentMethod?: string;
-  transactionId?: string;
+  transactionId?: number;
   tableNumber?: string;
   voucherCode?: string;
   paymentStatus?: 'pending' | 'completed' | 'waiting_cash_confirmation';
@@ -89,14 +88,14 @@ export interface Voucher {
 }
 
 export interface UserUser {
-  id: string;
+  id: number;
   name: string;
   email: string;
   phone: string;
 }
 
 export interface Notification {
-  id: string;
+  id: number;
   title: string;
   message: string;
   type: 'success' | 'info' | 'warning' | 'error';
@@ -112,3 +111,6 @@ export interface Customizations {
     toppings: string[];
     notes: string;
 }
+
+export type LoadingState = "loading" | "success" | "error" | "timeout" | "offline";
+

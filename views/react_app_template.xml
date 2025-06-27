@@ -2,7 +2,7 @@
 <odoo>
     <record id="react_development_mode" model="ir.config_parameter">
         <field name="key">react_development_mode</field>
-        <field name="value">False</field>
+        <field name="value">True</field>
     </record>
 
     <template id="self_order_page_view_dev" name="Self Order Interface (Development)">

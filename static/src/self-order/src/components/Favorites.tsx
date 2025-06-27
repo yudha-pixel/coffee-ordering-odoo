@@ -2,52 +2,11 @@ import { useState } from 'react';
 import { ArrowLeft, Heart, Trash2, Plus, Coffee } from 'lucide-react';
 import { Button } from './ui/button';
 import LogoWhite from "../assets/LogoWhite.png";
-
-// interface CartItem {
-//   id: string;
-//   name: string;
-//   description: string;
-//   price: number;
-//   image: string;
-//   category: string;
-//   quantity: number;
-//   customizations?: {
-//     size: string;
-//     milk: string;
-//     toppings: string[];
-//     notes: string;
-//   };
-// }
-
-interface MenuItem {
-  id: string;
-  name: string;
-  description: string;
-  basePrice: number; // Updated to match App.tsx structure
-  variants?: {
-    sizes?: {
-      Small: number;
-      Regular: number;
-      Large: number;
-    };
-    milk?: {
-      Regular: number;
-      'Oat Milk': number;
-      'Almond Milk': number;
-      'Soy Milk': number;
-    };
-  };
-  image: string;
-  category: string;
-  isNew?: boolean;
-  isRecommended?: boolean;
-  orderCount?: number;
-  comboWith?: string[];
-}
+import {Product} from "@/types";
 
 interface FavoriteItem {
-  id: string;
-  menuItemId: string;
+  id: number;
+  menuItemId: number;
   name: string;
   customizations: {
     size: string;
@@ -62,10 +21,10 @@ interface FavoriteItem {
 interface FavoritesProps {
   onBack: () => void;
   favorites: FavoriteItem[];
-  menuItems: MenuItem[];
-  onRemoveFavorite: (favoriteId: string) => void;
+  menuItems: Product[];
+  onRemoveFavorite: (favoriteId: number) => void;
   onReorder: (favorite: FavoriteItem) => void;
-  onAddToCart: (item: MenuItem, quantity: number, customizations: any) => void;
+  onAddToCart: (item: Product, quantity: number, customizations: any) => void;
 }
 
 export default function Favorites({ 
@@ -206,7 +165,7 @@ export default function Favorites({
                         {menuItem && (
                           <div
                             className="w-full h-full bg-cover bg-center"
-                            style={{ backgroundImage: `url('${menuItem.image}')` }}
+                            style={{ backgroundImage: `url('${menuItem.image_url}')` }}
                           />
                         )}
                       </div>

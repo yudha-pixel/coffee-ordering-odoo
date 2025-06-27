@@ -1,8 +1,9 @@
 from odoo import http
-from odoo.http import request
+from odoo.http import request, Response
 from odoo import fields
 from datetime import timedelta
 import uuid
+import json
 
 class CoffeeOrderController(http.Controller):
     @http.route('/self_order/app', type='http', auth='public')
@@ -15,7 +16,7 @@ class CoffeeOrderController(http.Controller):
 
         return request.render(template)
 
-    @http.route('/self_order/app/products', type='json', auth='public')
+    @http.route('/self_order/app/products', type='http', auth='public', methods=['GET'], cors='*')
     def get_products_for_app(self, **kw):
         Product = request.env['product.template'].sudo().with_context(bin_size=True)
         categories = request.env['pos.category'].sudo().search([], order="sequence, name")
@@ -27,11 +28,17 @@ class CoffeeOrderController(http.Controller):
                 ('available_in_pos', '=', True),
                 ('pos_categ_ids', '=', category.id),
             ])
-            products = products.filtered(lambda p: p.product_variant_id.is_published)
 
             if products:
                 products_data = []
                 for product in products:
+                    variants_data = {}
+                    for variant in product.attribute_line_ids:
+                        attribute_name = variant.attribute_id.name
+                        values_data = {}
+                        for ptav in variant.product_template_value_ids:
+                            values_data[ptav.name] = ptav.price_extra
+                        variants_data[attribute_name] = values_data
                     products_data.append({
                         'id': product.id,
                         'name': product.name,
@@ -39,13 +46,25 @@ class CoffeeOrderController(http.Controller):
                         'image_url': f'/web/image/product.template/{product.id}/image_1920',
                         'description': product.description_sale,
                         'product_variant_id': product.product_variant_id.id,
+                        'isNew': product.is_new,
+                        'isRecommend': product.is_favorite,
+                        'optional_product_ids': product.optional_product_ids.ids,
+                        'comboIds': product.optional_product_ids.ids,
+                        'variants': variants_data,
                     })
+
                 grouped_products_data.append({
-                    'category_id': category.id,
-                    'category_name': category.name,
+                    'id': category.id,
+                    'name': category.name,
                     'products': products_data,
                 })
-        return grouped_products_data
+
+        # Convert the Python list to a JSON string and return it in a Response object
+        return Response(
+            json.dumps(grouped_products_data),
+            content_type='application/json',
+            status=200
+        )
 
     # @http.route('/order', type='http', auth='public', website=True)
     @http.route('/order', auth="public", website=True)

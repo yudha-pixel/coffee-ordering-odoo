@@ -21,7 +21,7 @@ interface NavigationDrawerProps {
 }
 
 // Enhanced Navigation Drawer with User Profile
-export default function NavigationDrawer({ 
+export default function NavigationDrawer({
   user,
   onClose, 
   onShowOrderHistory, 
@@ -167,7 +167,7 @@ export default function NavigationDrawer({
       </div>
 
       <div className="bg-[#000000] p-4">
-        <div className="flex items-center justify-center space-x-2">
+        <div className="flex flex-row items-center justify-center gap-[5px]">
           <span className="text-white text-sm">Powered By</span>
           <div
             className="h-4 w-12 bg-center bg-contain bg-no-repeat"

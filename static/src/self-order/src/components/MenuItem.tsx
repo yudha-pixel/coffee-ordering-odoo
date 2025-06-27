@@ -1,5 +1,5 @@
 // Menu Item Component for Navigation
-export default function MenuItem({ icon, title, onClick }: { icon: React.ReactNode; title: string; onClick: () => void }) {
+export default function MenuItem({ icon, title, onClick }: { icon: React.ReactNode; title: string; onClick: () => void | null}) {
   return (
     <button
       onClick={onClick}

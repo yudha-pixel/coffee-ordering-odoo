@@ -7,17 +7,22 @@ import Recommend from "@/assets/Recommend.png?inline";
 
 interface ProductComponentProps {
     product: Product;
+    onProductClick: (product: Product) => void;
 }
 
-export default function ProductComponent({ product }: ProductComponentProps) {
+export default function ProductComponent({ product, onProductClick }: ProductComponentProps) {
     return (
-        <div key={product.id} className="w-full bg-white border-b flex pb-3">
+        <div
+            key={product.id}
+            className="w-full bg-white border-b flex pb-3 cursor-pointer transition-transform duration-150 active:scale-[0.98] active:bg-gray-50"
+            onClick={() => onProductClick(product)}
+        >
             <div className="w-full flex gap-3">
                 <div className="w-50 h-30 flex bg-gray-700 dark:bg-gray-700 rounded-xl overflow-hidden">
                     <LazyImage
                         src={product.image_url}
                         alt={product.name}
-                        className="w-full object-cover"
+                        className="size-full flex justify-center items-center"
                     />
                 </div>
 
@@ -50,10 +55,15 @@ export default function ProductComponent({ product }: ProductComponentProps) {
                             </div>
                         </div>
 
-                        <div className="border border-[#84482b] text-white px-2 py-2 rounded-sm shadow-sm
-                                relative transition-colors duration-200 flex items-center space-x-2">
+                        <button className="border border-[#84482b] text-white px-2 py-2 rounded-sm shadow-sm
+                                relative transition-colors duration-200 flex items-center space-x-2"
+                                onClick={(e) => {
+                                    e.stopPropagation(); // Prevent opening detail view when adding
+                                    alert(`Added ${product.name} to cart!`);
+                                }}
+                        >
                             <Plus className="w-4 h-4 text-[#84482b]"/>
-                        </div>
+                        </button >
                     </div>
                 </div>
             </div>

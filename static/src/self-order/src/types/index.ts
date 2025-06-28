@@ -10,11 +10,11 @@ export interface Product {
     orderCount: number;
     category: string | '';
     comboIds?: number[];
-    variants?: {
-        [attributeName: string]: {
-            [valueName: string]: number;
-        };
-    };
+    variants?: Record<string, {
+        display_type: string;
+        values: Record<string, number>;
+    }>;
+    product_variants?: ProductVariant[];
 }
 
 export interface ProductCategory {
@@ -23,6 +23,11 @@ export interface ProductCategory {
     products: Product[];
 }
 
+export interface ProductVariant {
+    id: number;
+    price: number;
+    combination: Record<string, string>;
+}
 
 export interface CartItem {
   id: number;

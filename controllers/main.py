@@ -33,12 +33,33 @@ class CoffeeOrderController(http.Controller):
                 products_data = []
                 for product in products:
                     variants_data = {}
-                    for variant in product.attribute_line_ids:
-                        attribute_name = variant.attribute_id.name
+                    for variant_line in product.attribute_line_ids:
+                        attribute = variant_line.attribute_id
+                        attribute_name = attribute.name
+                        display_type = attribute.display_type
+
                         values_data = {}
-                        for ptav in variant.product_template_value_ids:
+                        for ptav in variant_line.product_template_value_ids:
                             values_data[ptav.name] = ptav.price_extra
-                        variants_data[attribute_name] = values_data
+
+                        variants_data[attribute_name] = {
+                            'display_type': display_type,
+                            'values': values_data
+                        }
+
+                    product_variants_info = []
+                    for variant in product.product_variant_ids:
+                        # Create a simple mapping of "Attribute Name": "Value Name" for this variant
+                        combination = {
+                            v.attribute_id.name: v.name
+                            for v in variant.product_template_attribute_value_ids
+                        }
+                        product_variants_info.append({
+                            'id': variant.id,  # The unique ID of the product.product variant
+                            'price': variant.lst_price,  # The final price for this specific variant
+                            'combination': combination,  # The attributes that define this variant
+                        })
+
                     products_data.append({
                         'id': product.id,
                         'name': product.name,
@@ -51,6 +72,7 @@ class CoffeeOrderController(http.Controller):
                         'optional_product_ids': product.optional_product_ids.ids,
                         'comboIds': product.optional_product_ids.ids,
                         'variants': variants_data,
+                        'product_variants': product_variants_info
                     })
 
                 grouped_products_data.append({

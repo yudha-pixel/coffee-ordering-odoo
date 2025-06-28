@@ -10,12 +10,16 @@ import { Search } from "lucide-react";
 import {useProducts} from "@/hooks/useProducts.ts";
 import LogoWhite from "@/assets/LogoWhite.png?inline";
 import LazyImage from "@/components/LazyImage.tsx";
+import ProductDetailOverlay from "./components/ProductDetailOverlay";
+import {Product} from "@/types";
 
 
 export default function App() {
     const [isDarkMode] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState<string | number>('all');
     const [isNavDrawerOpen, setIsNavDrawerOpen] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
     // Product
     const { productGroups, loading, error } = useProducts();
@@ -28,8 +32,31 @@ export default function App() {
         { id: 'mostOrder', name: 'Most Ordered' },
         ...productGroups.map(pg => ({ id: pg.id, name: pg.name }))
     ];
+    // TODO: manage order count, sort
+    const filteredProducts = allProducts.filter(product => {
+        const matchesCategory =
+            selectedCategory === 'all' ||
+            (selectedCategory === 'isNew' && product.isNew) ||
+            (selectedCategory === 'isRecommend' && product.isRecommend) ||
+            (selectedCategory === 'mostOrder' && (product.orderCount || 0) >= 150) ||
+            product.category === filterCategories.find(cat => cat.id === selectedCategory)?.name;
+
+        const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+
+        return matchesCategory && matchesSearch;
+    });
+    const handleAddToCart = (item: Product, quantity: number, customizations: any) => {
+        // Placeholder for your actual add to cart logic
+        console.log("Adding to cart:", { item, quantity, customizations });
+        alert(`${quantity} x ${item.name} added to cart!`);
+    };
 
     return (
+        //ToDO: Pull to refresh
+        //Todo: Skeleton per item
+        //Todo: Favorite button
+        //Todo: Notification button
+
         // Main Menu Page
         <div className={`flex-col w-full h-screen bg-gradient-to-b from-[#167dda] to-[#104779] 
             overflow-hidden ${isDarkMode ? 'dark' : ''}`}>
@@ -38,11 +65,7 @@ export default function App() {
             <div className="absolute w-full bottom-0 bg-black p-4">
                 <div className="flex flex-row items-center justify-center gap-[5px]">
                     <span className="text-white text-sm">Powered By</span>
-                    <LazyImage
-                        src={LogoWhite}
-                        alt="ERPQuick"
-                        className="h-full object-fit"
-                    />
+                    <LazyImage src={LogoWhite} alt="ERPQuick" className="h-10 object-fit"/>
                 </div>
             </div>
             <main className={`relative bg-white flex flex-col transform transition-all duration-500 ease-in-out origin-top-left
@@ -75,10 +98,10 @@ export default function App() {
                                     <Search className="w-5 h-5 text-gray-300 dark:bg-gray-800"/>
                                 </div>
                                 <input type="text" placeholder="Search for items..."
-                                      className="w-full pl-12 pr-4 py-2 bg-white dark:bg-gray-800 border border-gray-300
-                                      dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#84482b]
-                                      focus:border-transparent transition-all duration-200 text-gray-900 dark:text-gray-100"/>
-
+                                       onChange={(e) => setSearchTerm(e.target.value)}
+                                       className="w-full pl-12 pr-4 py-2 bg-white dark:bg-gray-800 border border-gray-300
+                                       dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#84482b]
+                                       focus:border-transparent transition-all duration-200 text-gray-900 dark:text-gray-100"/>
                             </div>
                             <div className="flex overflow-x-auto py-3 px-5">
                                 {filterCategories.map(group => (
@@ -105,13 +128,25 @@ export default function App() {
                     </div>
 
                     <div className="flex-1 overflow-y-auto">
-                        <MainMenuPage productGroups={allProducts} loading={loading} error={error}/>
+                        <MainMenuPage
+                            productGroups={filteredProducts} loading={loading} error={error}
+                            onProductClick={(product) => setSelectedProduct(product)}
+                        />
                     </div>
                 </div>
                     {isNavDrawerOpen && (
                         <div className="absolute inset-0" onClick={() => setIsNavDrawerOpen(false)} />
                     )}
             </main>
+
+            {/* Conditionally render the detail overlay */}
+            {selectedProduct && (
+                <ProductDetailOverlay
+                    item={selectedProduct}
+                    onClose={() => setSelectedProduct(null)}
+                    onAddToCart={handleAddToCart} // Pass the updated handler
+                />
+            )}
         </div>
     );
 }
